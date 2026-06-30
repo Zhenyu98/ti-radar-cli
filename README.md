@@ -77,6 +77,8 @@ python -m pip install -e ".[studio,serial,plot]"
 
 `pythonnet` is required for direct RSTD control. `pyserial` improves COM-port checks. `matplotlib` is used for quicklook plots.
 
+Hardware connection reference: [TI DCA1000 + mmWave Studio hardware guide](https://dev.ti.com/tirex/content/radar_toolbox_2_20_00_05/docs/hardware_guides/dca1000_mmwave_studio_user_guide.html).
+
 ## Agent Setup
 
 Copy this to Codex, Claude Code, Cursor, or another coding agent:
@@ -187,10 +189,10 @@ A usable capture has a passing manifest verdict, a raw bin larger than the minim
 
 - `cfg explain` and profile linting for zero-hardware setup checks.
 - A headless SDK + DCA1000 path for Linux-friendly raw capture.
-- A data-driven device registry with evidence levels for community hardware routes.
+- A device configuration table so more TI radar boards can be added with clear verification levels.
 - Raw ADC quicklook tools for range-Doppler sanity checks after capture.
 
-Stay tuned.
+Stay tuned. Contributions from more developers and hardware users are welcome.
 
 ## Acknowledgements
 

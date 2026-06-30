@@ -76,6 +76,8 @@ python -m pip install -e ".[studio,serial,plot]"
 
 `pythonnet` 用于 RSTD 控制，`pyserial` 用于增强 COM 口检查，`matplotlib` 用于 quicklook 图。
 
+硬件连接方式参考：[TI DCA1000 + mmWave Studio hardware guide](https://dev.ti.com/tirex/content/radar_toolbox_2_20_00_05/docs/hardware_guides/dca1000_mmwave_studio_user_guide.html)。
+
 ## Agent 使用
 
 把这段发给 Codex、Claude Code、Cursor 或其他 coding agent：
@@ -186,10 +188,10 @@ manifest verdict 通过，raw bin 大于最小阈值，received packets 大于 0
 
 - `cfg explain` 和 profile linting，用于无硬件配置检查。
 - SDK + DCA1000 headless 路线，面向更友好的 Linux raw capture。
-- 数据驱动的 device registry，用证据等级承接社区硬件路线。
+- 建立设备配置表，让更多 TI 雷达板可以按验证等级逐步加入。
 - raw ADC quicklook 工具，用于采集后的 range-Doppler sanity check。
 
-敬请期待。
+敬请期待，也欢迎更多开发者和硬件用户加入。
 
 ## 致谢
 
