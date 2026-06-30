@@ -26,6 +26,7 @@
   <a href="#agent-使用">Agent 使用</a> ·
   <a href="#设备验证等级">设备验证</a> ·
   <a href="#faq">FAQ</a> ·
+  <a href="#未来规划">未来规划</a> ·
   <a href="README.md">English</a>
 </p>
 
@@ -178,6 +179,17 @@ fail 条件包括：缺 raw bin、bin 太小、缺 DCA packet log、received pac
 **什么样的采集才算可用？**
 
 manifest verdict 通过，raw bin 大于最小阈值，received packets 大于 0，out-of-sequence 和 zero-filled 计数为 0。
+
+## 未来规划
+
+`ti-radar-cli` 会继续朝更完整的 Agent 可操作 TI 雷达工作流推进：
+
+- `cfg explain` 和 profile linting，用于无硬件配置检查。
+- SDK + DCA1000 headless 路线，面向更友好的 Linux raw capture。
+- 数据驱动的 device registry，用证据等级承接社区硬件路线。
+- raw ADC quicklook 工具，用于采集后的 range-Doppler sanity check。
+
+敬请期待。
 
 ## 致谢
 

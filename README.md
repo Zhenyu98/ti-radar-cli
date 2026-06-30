@@ -27,6 +27,7 @@
   <a href="#agent-setup">Agent Setup</a> ·
   <a href="#device-verification">Device Verification</a> ·
   <a href="#faq">FAQ</a> ·
+  <a href="#roadmap">Roadmap</a> ·
   <a href="README_zh.md">简体中文</a>
 </p>
 
@@ -179,6 +180,17 @@ It reads device identity through RSTD and should avoid firmware download, RF ena
 **What makes a capture usable?**
 
 A usable capture has a passing manifest verdict, a raw bin larger than the minimum threshold, received packets above zero, and zero out-of-sequence or zero-filled packet counters.
+
+## Roadmap
+
+`ti-radar-cli` is moving toward a broader, agent-operable TI radar workflow:
+
+- `cfg explain` and profile linting for zero-hardware setup checks.
+- A headless SDK + DCA1000 path for Linux-friendly raw capture.
+- A data-driven device registry with evidence levels for community hardware routes.
+- Raw ADC quicklook tools for range-Doppler sanity checks after capture.
+
+Stay tuned.
 
 ## Acknowledgements
 
