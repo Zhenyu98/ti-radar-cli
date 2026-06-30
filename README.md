@@ -166,31 +166,6 @@ failure_reasons: []
 
 Failure reasons include missing raw bin, tiny raw bin, missing DCA packet log, zero received packets, out-of-order packets, and zero-filled packets/bytes.
 
-## Public Scope
-
-Published contents are limited to the generic TI radar CLI, the `ti-radar` skill, tests, and public documentation.
-
-Excluded contents:
-
-- project-specific multi-sensor synchronization experiments
-- local sessions and packet logs
-- private lab notes
-- raw ADC captures
-- screenshots with machine or account state
-- local machine paths and credentials
-
-Before GitHub or package publication, review [PUBLISH_AUDIT.md](PUBLISH_AUDIT.md).
-
-## Tested Matrix
-
-| Area | Current release status |
-|---|---|
-| Python | 3.10+ target |
-| OS | Windows for mmWave Studio/RSTD workflows; non-hardware smoke path is pure Python |
-| Hardware backend | mmWave Studio/RSTD + DCA1000 route first |
-| Headless/Linux backend | roadmap item |
-| Public package status | source checkout install first; package registry publication requires a separate audit |
-
 ## FAQ
 
 **Can this run without hardware?**

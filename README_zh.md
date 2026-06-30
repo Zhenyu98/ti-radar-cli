@@ -165,31 +165,6 @@ failure_reasons: []
 
 fail 条件包括：缺 raw bin、bin 太小、缺 DCA packet log、received packets 为 0、乱序、zero-filled packet/byte。
 
-## 公开范围
-
-本仓库发布范围只包含通用 TI radar CLI、`ti-radar` skill、测试和公开文档。
-
-排除内容：
-
-- 多传感器同步实验
-- 本地 session 和 packet log
-- 私有实验记录
-- raw ADC 采集数据
-- 带机器或账号状态的截图
-- 本地机器路径和凭据
-
-GitHub 或包发布前先看 [PUBLISH_AUDIT.md](PUBLISH_AUDIT.md)。
-
-## 测试矩阵
-
-| 项目 | 当前发布状态 |
-|---|---|
-| Python | 目标 3.10+ |
-| OS | mmWave Studio/RSTD 路线面向 Windows；无硬件 smoke path 为纯 Python |
-| 硬件 backend | 优先 mmWave Studio/RSTD + DCA1000 |
-| Linux/headless backend | roadmap 项 |
-| 包发布状态 | 先支持源码 checkout 安装；包注册表发布需要单独审计 |
-
 ## FAQ
 
 **没有硬件可以跑吗？**
