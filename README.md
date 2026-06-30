@@ -1,55 +1,95 @@
-# ti-radar-cli
+<h1 align="center">
+  <img src="docs/assets/logo.svg" alt="ti-radar-cli logo" width="64" />
+  <br />
+  ti-radar-cli
+</h1>
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![Python](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](pyproject.toml)
-[![CLI](https://img.shields.io/badge/CLI-ti--radar-black.svg)](src/ti_radar/cli.py)
+<p align="center">
+  <strong>Reliability-first command-line tools and an agent skill for TI mmWave radar capture.</strong>
+</p>
 
-Reliability-first command-line tools and an agent skill for TI mmWave radar capture with mmWave Studio, RSTD, and DCA1000.
+<p align="center">
+  <strong>Inspect hardware state</strong> ·
+  <strong>record packet verdicts</strong> ·
+  <strong>operate safely with agents</strong>
+</p>
 
-> 中文文档见 [README_zh.md](README_zh.md).
+<p align="center">
+  <a href="https://github.com/Zhenyu98/ti-radar-cli/stargazers"><img alt="GitHub stars" src="https://img.shields.io/github/stars/Zhenyu98/ti-radar-cli?style=for-the-badge&logo=github"></a>
+  <a href="LICENSE"><img alt="MIT License" src="https://img.shields.io/badge/License-MIT-green.svg?style=for-the-badge"></a>
+  <a href="https://www.python.org/"><img alt="Python 3.10+" src="https://img.shields.io/badge/Python-3.10%2B-blue?style=for-the-badge&logo=python&logoColor=white"></a>
+  <a href="src/ti_radar/cli.py"><img alt="CLI ti-radar" src="https://img.shields.io/badge/CLI-ti--radar-0f172a?style=for-the-badge"></a>
+</p>
+
+<p align="center">
+  <a href="#why">Why</a> ·
+  <a href="#quick-start">Quick Start</a> ·
+  <a href="#agent-setup">Agent Setup</a> ·
+  <a href="#device-verification">Device Verification</a> ·
+  <a href="#faq">FAQ</a> ·
+  <a href="README_zh.md">简体中文</a>
+</p>
+
+<p align="center">
+  <img src="docs/assets/hero.svg" alt="ti-radar-cli evidence workflow" width="92%" />
+</p>
 
 ## Why
 
-TI mmWave radar capture is rarely blocked by one API call. It is usually blocked by state: device identity, firmware, COM ports, RSTD, mmWave Studio launch context, DCA1000 Ethernet, LVDS layout, packet logs, and raw bin verification.
+TI mmWave radar capture usually fails at the state boundary: device identity, firmware route, COM ports, RSTD, mmWave Studio launch context, DCA1000 Ethernet, LVDS layout, packet logs, and raw bin verification.
 
-`ti-radar-cli` turns that state into a small, inspectable command surface:
+`ti-radar-cli` turns those fragile boundaries into a small command surface that can be inspected by a person or operated by a coding agent.
 
-- safe readiness checks before capture
-- mmWave Studio/RSTD expert backend commands
-- profile validation and device routing
-- strict capture manifests and verdicts
-- raw ADC sanity processing
-- an agent skill that keeps operational rules outside CLI help
+| Manual radar bring-up | With `ti-radar-cli` |
+|---|---|
+| Recreate GUI steps from memory. | Run named readiness and capture commands. |
+| Trust a raw bin exists. | Read a manifest with packet counters and verdict. |
+| Let agents guess Lua or hardware sequence. | Give agents a skill with approval gates and safe defaults. |
+| Share vague hardware support claims. | Label routes as `verified`, `scaffold`, or community evidence. |
 
-## Install
+## Quick Start
 
 ```powershell
 git clone https://github.com/Zhenyu98/ti-radar-cli.git
 cd ti-radar-cli
 python -m pip install -e .
 ti-radar version
-```
-
-Optional dependencies:
-
-```powershell
-python -m pip install pythonnet pyserial matplotlib
-```
-
-`pythonnet` is required for direct RSTD control. `pyserial` improves COM-port checks. `matplotlib` is only needed for quicklook plots.
-
-## Quick Start
-
-Non-hardware smoke path:
-
-```powershell
-ti-radar version
 ti-radar doctor
 ti-radar capture smoke --backend mock
 ti-radar session inspect latest
 ```
 
-Hardware readiness, without starting capture:
+Expected success signal:
+
+```text
+ti-radar version prints package and Python information
+ti-radar doctor completes without starting capture
+capture smoke writes a mock session
+session inspect latest reads manifest.yaml
+```
+
+Optional hardware extras:
+
+```powershell
+python -m pip install -e ".[studio,serial,plot]"
+```
+
+`pythonnet` is required for direct RSTD control. `pyserial` improves COM-port checks. `matplotlib` is used for quicklook plots.
+
+## Agent Setup
+
+Copy this to Codex, Claude Code, Cursor, or another coding agent:
+
+```text
+Read https://github.com/Zhenyu98/ti-radar-cli/blob/main/agent-setup.md and follow it to install and configure ti-radar-cli for me.
+Goal: inspect the environment first, run the non-hardware smoke path, and ask before hardware state changes.
+```
+
+The agent guide points to `README.md` and `skills/ti-radar/SKILL.md`, then starts with `ti-radar version`, `ti-radar doctor`, `ti-radar capture smoke --backend mock`, and `ti-radar session inspect latest`.
+
+## Hardware Readiness
+
+Inspection commands:
 
 ```powershell
 ti-radar doctor --profile default_6843
@@ -58,7 +98,7 @@ ti-radar studio ping
 ti-radar studio identify
 ```
 
-Short capture pilot:
+Short capture pilot, after you intentionally approve hardware state changes:
 
 ```powershell
 ti-radar studio run --profile default_6843 --frames 10
@@ -67,7 +107,7 @@ ti-radar session inspect latest
 
 ## CLI Shape
 
-Top-level help is intentionally small:
+Top-level help stays small:
 
 ```text
 version
@@ -95,34 +135,16 @@ ti-radar session inspect latest
 ti-radar device route --part-id 6843
 ```
 
-## Safety Model
+## Device Verification
 
-CLI help only documents commands and arguments. Operational policy lives in the skill:
+Hardware coverage is labeled by evidence level.
 
-```text
-skills/ti-radar/SKILL.md
-```
+| Device/profile | Path | Verification level | Evidence expectation |
+|---|---|---|---|
+| `default_6843` / xWR6843-style route | mmWave Studio + RSTD + DCA1000 | `verified` for the author's lab route | clean short capture with manifest and DCA packet verdict |
+| Other xWR/AWR/IWR routes | device decode scaffolds | `scaffold` | derived from TI route semantics, needs contributor packet-log evidence before promotion |
 
-Default low-risk operations:
-
-- read profiles and paths
-- validate profile timing
-- inspect saved sessions
-- run mock captures
-- route known device IDs
-
-Operations that affect hardware state must be deliberate:
-
-- firmware download
-- RF enable
-- DCA1000 reset/probe
-- StartFrame
-- long raw ADC capture
-- changing NIC settings
-
-## Hardware Defaults
-
-The included `default_6843` route targets an AWR6843-style Studio flow and DCA1000 defaults:
+The default DCA1000 network values are common board defaults:
 
 ```text
 PC DCA adapter: 192.168.33.30/24
@@ -131,7 +153,7 @@ Command port:   4096
 Data port:      4098
 ```
 
-These are common DCA1000 defaults, not a promise that your machine is already configured correctly. Always run `ti-radar doctor` before capture.
+Always run `ti-radar doctor` before capture on a new machine.
 
 ## Capture Verdict
 
@@ -142,28 +164,65 @@ verdict: pass
 failure_reasons: []
 ```
 
-Failures include missing raw bin, tiny raw bin, missing DCA packet log, zero received packets, out-of-order packets, or zero-filled packets/bytes.
+Failure reasons include missing raw bin, tiny raw bin, missing DCA packet log, zero received packets, out-of-order packets, and zero-filled packets/bytes.
 
-## Agent Setup
+## Public Scope
 
-For Codex, Claude Code, Cursor, or other coding agents, start with:
+Published contents are limited to the generic TI radar CLI, the `ti-radar` skill, tests, and public documentation.
 
-```text
-agent-setup.md
-```
+Excluded contents:
 
-The setup guide tells the agent to inspect first, avoid hardware actions by default, and ask before risky operations.
+- project-specific multi-sensor synchronization experiments
+- local sessions and packet logs
+- private lab notes
+- raw ADC captures
+- screenshots with machine or account state
+- local machine paths and credentials
 
-## Star History
+Before GitHub or package publication, review [PUBLISH_AUDIT.md](PUBLISH_AUDIT.md).
 
-[![Star History Chart](https://api.star-history.com/svg?repos=Zhenyu98/ti-radar-cli&type=Date)](https://www.star-history.com/#Zhenyu98/ti-radar-cli&Date)
+## Tested Matrix
 
-## Scope
+| Area | Current release status |
+|---|---|
+| Python | 3.10+ target |
+| OS | Windows for mmWave Studio/RSTD workflows; non-hardware smoke path is pure Python |
+| Hardware backend | mmWave Studio/RSTD + DCA1000 route first |
+| Headless/Linux backend | roadmap item |
+| Public package status | source checkout install first; package registry publication requires a separate audit |
 
-This repository publishes only the generic TI radar CLI and skill layer.
+## FAQ
 
-It intentionally does not include project-specific multi-sensor synchronization experiments, local sessions, private lab data, or captured raw ADC bins.
+**Can this run without hardware?**
+
+Yes. Use `ti-radar capture smoke --backend mock` and `ti-radar session inspect latest` for the non-hardware path.
+
+**Does `ti-radar studio identify` start RF or capture frames?**
+
+It reads device identity through RSTD and should avoid firmware download, RF enable, and `StartFrame`.
+
+**What makes a capture usable?**
+
+A usable capture has a passing manifest verdict, a raw bin larger than the minimum threshold, received packets above zero, and zero out-of-sequence or zero-filled packet counters.
+
+## Acknowledgements
+
+This project is shaped by TI's public mmWave Studio, DCA1000, and radar toolbox concepts. TI binaries and private lab captures remain outside this repository.
+
+## Contributing
+
+Issues and pull requests are welcome. Please include the device/profile, backend, command line, manifest verdict, and packet-log counters when reporting hardware behavior. Keep secrets and local machine details out of logs and screenshots.
 
 ## License
 
-MIT License. See [LICENSE](LICENSE).
+This project is released under the MIT License. See [LICENSE](LICENSE).
+
+## Star History
+
+<a href="https://www.star-history.com/#Zhenyu98/ti-radar-cli&Date">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=Zhenyu98/ti-radar-cli&type=Date&theme=dark" />
+    <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=Zhenyu98/ti-radar-cli&type=Date" />
+    <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=Zhenyu98/ti-radar-cli&type=Date" />
+  </picture>
+</a>
