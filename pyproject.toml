@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ti-radar-cli"
+version = "0.1.0"
+description = "A reliability-first CLI and agent skill for TI mmWave radar capture with mmWave Studio, RSTD, and DCA1000."
+requires-python = ">=3.10"
+readme = "README.md"
+license = { text = "MIT" }
+authors = [{ name = "ti-radar-cli contributors" }]
+dependencies = [
+    "PyYAML>=6.0",
+    "numpy>=1.24",
+]
+
+[project.scripts]
+ti-radar = "ti_radar.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+ti_radar = ["configs/*.yaml", "mmw/*.m"]

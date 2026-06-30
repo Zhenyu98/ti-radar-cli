@@ -1,0 +1,52 @@
+# 雷达参数模板（外置，用户可改）。
+# active 选用哪个模板；default_6843 采用已验证的本项目 AWR6843ISK + DCA1000 pilot 参数。
+# 参考 DCAconnect.lua 提供的是 bring-up 顺序和关键 DCA/LVDS/RSTD 步骤，不代表 profile 数值完全照抄。
+# 固定不动的部分（保证不出错，不在此暴露）：3TX/4RX、ChanNAdcConfig(...,2,2,0)、
+#   LVDSLaneConfig(0,1,1,0,0,1,0,0)、DCA EthInit/Mode/PacketDelay、固件路径。
+
+active: default_6843
+
+profiles:
+
+  # ===== 已验证模板（你之前跑通的原值，保证不出错）=====
+  default_6843:
+    part_id: 6843           # device_routing.py: 6843 -> xwr68xx FW / 60G / 2-lane DCA mode
+    com_port: 3            # 雷达 enhanced 串口
+    start_freq_ghz: 60.25
+    min_freq_ghz: 60.0
+    max_freq_ghz: 64.0
+    idle_us: 200
+    adc_start_us: 6
+    ramp_end_us: 60
+    slope_mhz_us: 29.982
+    num_adc_samples: 128
+    sample_rate_ksps: 10000
+    hpf2_hz: 131072
+    rx_gain_db: 30
+    num_loops: 64          # 每帧 chirp loop 数（FrameConfig numLoops）
+    frame_period_ms: 60    # 当前 chirp 需 ≥49.92ms，60ms 安全
+    start_tx: 0
+    end_tx: 2
+    # 派生量(仅参考，脚本会重算并校验)：
+    #   range_res ≈ 0.39 m, max_range ≈ 50 m
+    #   v_max ≈ ±1.60 m/s (TDM 3TX, Tc=260us)  -> 走路1.4m/s可用，冲刺可能混叠
+
+  # ===== 实验模板（未现场验证，用前请先短采校验）=====
+  walk_fastvel_EXPERIMENTAL:
+    part_id: 6843
+    com_port: 3
+    start_freq_ghz: 60.25
+    min_freq_ghz: 60.0
+    max_freq_ghz: 64.0
+    idle_us: 100          # 缩短 idle 提升最大不模糊速度(~2.6m/s)；需确认不报帧时长错误
+    adc_start_us: 6
+    ramp_end_us: 60
+    slope_mhz_us: 29.982
+    num_adc_samples: 128
+    sample_rate_ksps: 10000
+    hpf2_hz: 131072
+    rx_gain_db: 30
+    num_loops: 64
+    frame_period_ms: 60
+    start_tx: 0
+    end_tx: 2
